@@ -1,0 +1,85 @@
+{% extends 'index.html' %}
+{%block addNote%}
+    {% load static %}
+<nav id="sidebarMenu" class=" col-md-3 col-lg-2 d-md-block sidebar collapse">
+      <div class="position-sticky pt-3">
+            <script>
+        $(document).ready(function(){
+
+        //toggle message_body
+        $(".message_head").click(function(){
+            $(this).next(".message_body").slideToggle(500)
+            return false;
+        });
+
+    });
+
+    </script>
+    <div class="">
+        <h2>Создать</h2>
+    <a class="message_head ml-4" style="color:black"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+      <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg></a>
+    <div class="message_body" style="display: none;">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="Absolute-Center" style="width:340px;height:640px;background:#FFEBCD">
+                <label for="">Название</label>
+                <div class="group">{{form.name}}</div>
+
+                <label for="">Текст</label>
+                <div class="group">{{form.text}}</div>
+
+                <label for="">Шрифт</label>
+                <div class="group"><select name="select_font">
+                    {%for i in font%}
+                    <option style="font-family: {{i.name}}" value="{{i.id}}">{{i.name}}</option>
+                    {%endfor%}
+                </select></div>
+
+                <label for="">Категория</label>
+                <div class="group"><select name="select_cat">
+                    {%for i in category%}
+                    <option value="{{i.id}}">{{i.name}}</option>
+                    {%endfor%}
+                </select></div>
+
+                <label for="">Цвет текста</label>
+                <div class="group"><input name="select_colorText" type="color"></div>
+
+                <label for="">Цвет фона</label>
+                <div class="group"><input name="select_colorArea" type="color"></div>
+
+                <div class="p-2">
+                        <button type="submit" class="btn btn-outline-dark">Подтвердить</button>
+                    </div>
+            </div>
+        </form>
+    </div>
+    </div>
+      </div>
+    </nav>
+
+{%endblock%}
+
+
+{%block content%}
+    <div class="row mb-1 ml-3 my-3">
+        {%for note in note_list%}
+            <div class="col-md-3">
+
+                <div class="row no-gutters shadow-lg overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative posts">
+
+                    <div class="col p-2 d-flex flex-column position-static" style=" height: 302px; background:{{note.colorArea}}">
+                        <div class="Absolute-Center">
+                            <h2 class="display-5"><font face={{note.font.name}} color={{note.colorText}}>{{note.name}}</font></h2>
+                            <h5><font face={{note.font.name}} color={{note.colorText}}>Категория: {{note.category.name}}</font></h5>
+                        </div>
+                        <pre><font size="4" face={{note.font.name}} color={{note.colorText}}>{{note.text}}</font></pre>
+                    </div>
+                    </div>
+            </div>
+        {%endfor%}
+    </div>
+{%endblock%}
